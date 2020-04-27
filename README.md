@@ -80,10 +80,43 @@ My professor has spent a great deal of time developing the theory of percolation
 
 While I spent a lot of time reading about these different sub-disciplines, I focused most of my time working on networks that are of a transitional dimension (i.e. a really large 2-d network with a very small height).  Naturally, if a randomly evolving network has more dimensions to grow in, long-range connectivity will emerge more quickly for the same 'infection rate' (which is analogous to saying that a virus will spread more quickly if more people are around). We were interested in describing the relationship between percolation threshold values and marginal dimensionality, so I studied <img src="https://render.githubusercontent.com/render/math?math=p_c"> values in increasingly thick network 'slabs'. Here I will show the 2-d case for purposes of illustration.
 
-To setup the confines of our network (in the bond percolation regime that I am showing), one can create a "lattice" or system of nodes (also called sites) of a specific size. Below is an example of a 4x4x1 square lattice:
+#### Solution
+To setup the confines of our network (in the bond percolation regime that I am showing), one can create a "lattice" or system of nodes (also called sites) of a specific size. Below is an example of a 4x4x1 square lattice (L = 4):
 
-<p align="center"><img src="percolation/start.gif" /></p>
+<p align="center"><img width="200" src="percolation/start.png"  /></p>
 
+Programmatically, this can be modeled by a simple 1-d array equal in length to the total number of nodes, which we mentally "chop" into L rows, chopping every L nodes to create an abstract lattice from a simple array. Next we have to model the ways in which nodes can interact with each other. 
+
+In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds in terms of the vertices that would be necessitated by these bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
+
+```python
+# init vertex lists, return iterator (3/2*N) as 'index'
+def init_lists(v1, v2):
+    index = 0
+    for x in range(0, WIDTH):
+        for y in range(0, WIDTH):
+            for z in range(0, HEIGHT):
+                s1 = x + WIDTH*y + WIDTH*WIDTH*z
+                s2 = ((x+1)&W) + WIDTH*y + WIDTH*WIDTH*z
+                index = connect(v1, v2, s1, s2, index)
+                s2 = x + WIDTH*((y+1)&W)+ WIDTH*WIDTH*z
+                index = connect(v1, v2, s1, s2, index)
+                if (z < HEIGHT-1):
+                    s2 = x + WIDTH*y + WIDTH*WIDTH*((z+1)&W)
+                    index = connect(v1, v2, s1, s2, index)
+                else:
+                    s2 = x + WIDTH*y + WIDTH*WIDTH*(0)
+                    index = connect(v1, v2, s1, s2, index)
+    return index
+```
+I am using the `WIDTH` of the system as a pre-defined 'jump' within the array, where +/-`WIDTH*y` corresponds to a jump of y rows N or S, while +/- 1 is a movement left or right. In this way, we define all the possible vertices of bonds, connect them:
+```python 
+def connect(v1, v2, A, B, i):
+    v1[i] = A
+    v2[i] = B        
+    return i + 1
+```
+and store them in lists that I've called `v1` and `v2`. Now that we have defined all the possible ways in which local connections can appear, it's to start evolving the network!
 
 The evolution of these networks involves a couple interesting pieces of code. First is the `findroot()` routine, which is analogous to a contact tracing algorithm that finds the root node of a cluster, given any node:
 
@@ -94,6 +127,33 @@ def findroot(i, ptr):
         return i
     ptr[i] = findroot(ptr[i], ptr)
     return ptr[i]
+```
+This is situation is sort of like employees (nodes) acting as agents of companies (clusters) in a quest to merge with the largest company, but only the CEO of each company knows how many employees they have. So if two employees of different companies randomly meet, they would ask their respective superiors how many people are in the company and if that superior doesn't know, they are "pointed" up the chain of command until they get to the CEO. This is the portion of the program referred to as 'path compression' or 'contact-tracing' in epidemiology. 
+
+Once you finally get to the CEO (root node), the company with a smaller workforce (# nodes) would decide to merge with the larger company (cluster). This is the 'union' in widely used 'union-find' algorithms, and my implementation (based on [the work of my professor Robert Ziff and Mark Newman](https://arxiv.org/abs/cond-mat/0101295)) is below:
+
+```python
+# union-find routine: bonds connect sites
+def cluster(index, lists, big, M2):
+    v1, v2, ptr, smax, M2tot, M2minus = lists
+    for i in range(0, index):
+        r1 = findroot(v1[i], ptr)
+        r2 = findroot(v2[i], ptr)
+        if (r2 != r1):
+            M2 += ptr[r1]*2.0*ptr[r2]
+            if ptr[r1] > ptr[r2]:
+                ptr[r2] += ptr[r1]
+                ptr[r1] = r2
+                r1 = r2
+            else:
+                ptr[r1] += ptr[r2]
+                ptr[r2] = r1
+            if (-ptr[r1]>big):
+                big = -ptr[r1]
+        smax[i] += big
+        M2tot[i] += M2
+        M2minus[i] += (M2 - big*1.0*big)
+    return ptr
 ```
 
 
