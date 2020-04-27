@@ -91,7 +91,7 @@ One could imagine "chopping" this array into L rows, chopping every L nodes to c
 
 <p align="center"><img width="200" src="percolation/start.png"  /></p>
 
-Next we have to model the ways in which nodes can interact with each other. In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds in terms of the vertices that would be necessitated by these bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
+Next we have to model the ways in which nodes can interact with each other. In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds as a list of vertices necessitated by possible bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
 
 ```python
 # init vertex lists, return iterator (3/2*N) as 'index'
@@ -114,6 +114,7 @@ def init_lists(v1, v2):
     return index
 ```
 I am using the `WIDTH` of the system as a pre-defined 'jump' within the array, where +/-`WIDTH*y` corresponds to a jump of y rows N or S, while +/- 1 is a movement left or right. In this way, we define all the possible vertices of bonds, connect them:
+
 ```python 
 def connect(v1, v2, A, B, i):
     v1[i] = A
@@ -123,6 +124,7 @@ def connect(v1, v2, A, B, i):
 and store them in lists that I've called `v1` and `v2`. Now that we have defined all the possible ways in which local connections can appear, it's time to start growing the network!
 
 The evolution of these networks involves a couple interesting pieces of code. First is the `findroot()` routine, which is analogous to a contact tracing algorithm that finds the root node of a cluster, given any node:
+
 ```python
 # recursive path compression 'find' algorithm
 def findroot(i, ptr):
