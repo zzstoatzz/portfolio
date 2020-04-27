@@ -78,13 +78,17 @@ For the physics lab that accompanied Physics 390: Modern Physics (that I took fo
 
 My professor has spent a great deal of time developing the theory of percolation, or long-range connectivity in networks. This is applied to wide range of studies and research applications, like: [modeling adsorbing and reacting surfaces](https://en.wikipedia.org/wiki/Random_sequential_adsorption), [modeling epidemics](https://en.wikipedia.org/wiki/Epidemic_models_on_lattices), the susceptibility of server networks to localized attacks, and is even used in the development of [more robust natural language processing tehcnologies](https://towardsdatascience.com/intuitive-understanding-of-attention-mechanism-in-deep-learning-6c9482aecf4f). The characteristic value of a network in percolation theory is the critical threshold probability <img src="https://render.githubusercontent.com/render/math?math=p_c">. Which, depending on the regime (site/bond/site-bond), represents the probability of occupying a site or bond that leads to unchecked cluster growth. To put this in (unfortunate) context, the critical percolation threshold of network representing the spread of Coronavirus between people on Earth would be the likelihood of adjacent individuals spreading the virus that leads to every person on Earth becoming infected (neglecting the fact that caution and infection rates are related). 
 
-While I spent a lot of time reading about these different sub-disciplines, I focused most of my time working on networks that are of a transitional dimension (i.e. a really large 2-d network with a very small height).  Naturally, if a randomly evolving network has more dimensions to grow in, long-range connectivity will emerge more quickly for the same 'infection rate' (which is analogous to saying that a virus will spread more quickly if more people are around). We were interested in describing the relationship between percolation threshold values and marginal dimensionality, so I studied <img src="https://render.githubusercontent.com/render/math?math=p_c"> values in increasingly thick network 'slabs'. Here I will show the 2-d case for purposes of illustration.
+While I spent a lot of time reading about these different sub-disciplines, I focused most of my time working on networks that are of a transitional dimension (i.e. a really large 2-d network with a very small height).  Naturally, if a randomly evolving network has more dimensions to grow in, long-range connectivity will emerge more quickly for the same 'infection rate' (which is analogous to saying that a virus will spread more quickly if more people are around). We were interested in describing the relationship between percolation threshold values and marginal dimensionality, so I studied <img src="https://render.githubusercontent.com/render/math?math=p_c"> values in increasingly thick network 'slabs'. Here I will show the strict 2-d case for purposes of illustration.
 
 #### Solution
 To setup the confines of our network (in the bond percolation regime that I am showing), one can create a "lattice" or system of nodes (also called sites) of a specific size. Programmatically, this can be modeled by a simple 1-d array equal in length to the total number of nodes, as shown by the typical array below:
+
 <p align="center"><img height="70" src="percolation/array.png"  /></p>
+
 One could imagine "chopping" this array into L rows, chopping every L nodes to create an abstract lattice from a simple array. Below is the chopped array, resulting in an abstracted 4x4x1 square lattice (where L = 4):
+
 <p align="center"><img width="200" src="percolation/start.png"  /></p>
+
 Next we have to model the ways in which nodes can interact with each other. In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds in terms of the vertices that would be necessitated by these bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
 
 ```python
@@ -114,10 +118,9 @@ def connect(v1, v2, A, B, i):
     v2[i] = B        
     return i + 1
 ```
-and store them in lists that I've called `v1` and `v2`. Now that we have defined all the possible ways in which local connections can appear, it's time to start evolving the network!
+and store them in lists that I've called `v1` and `v2`. Now that we have defined all the possible ways in which local connections can appear, it's time to start growing the network!
 
 The evolution of these networks involves a couple interesting pieces of code. First is the `findroot()` routine, which is analogous to a contact tracing algorithm that finds the root node of a cluster, given any node:
-
 ```python
 # recursive path compression 'find' algorithm
 def findroot(i, ptr):
@@ -129,7 +132,6 @@ def findroot(i, ptr):
 This is situation is sort of like employees (nodes) acting as agents of companies (clusters) in a quest to merge with the largest company, but only the CEO of each company knows how many employees they have. So if two employees of different companies randomly meet, they would ask their respective superiors how many people are in the company and if that superior doesn't know, they are "pointed" up the chain of command until they get to the CEO. This is the portion of the program referred to as 'path compression' or 'contact-tracing' in epidemiology. 
 
 Once you finally get to the CEO (root node), the company with a smaller workforce (# nodes) would decide to merge with the larger company (cluster). This is the 'union' in widely used 'union-find' algorithms, and my implementation (based on [the work of my professor Robert Ziff and Mark Newman](https://arxiv.org/abs/cond-mat/0101295)) is below:
-
 ```python
 # union-find routine: bonds connect sites
 def cluster(index, lists, big, M2):
@@ -153,9 +155,7 @@ def cluster(index, lists, big, M2):
         M2minus[i] += (M2 - big*1.0*big)
     return ptr
 ```
-
-
-Using ffmpeg I stitched together images of the clusters after each new added bond to show the evolution of the network for widths of 4, 16, 32, and 64 nodes as shown:
+Using igraph (which I believe sits on top of matplotlib.pyplot) and ffmpeg I created and stitched together images of the clusters after each new added bond to show the evolution of the network for widths of 4, 16, 32, and 64 nodes as shown:
 
 <p align="center"><img src="percolation/1.gif" /></p>
 
@@ -164,3 +164,17 @@ Using ffmpeg I stitched together images of the clusters after each new added bon
 <p align="center"><img src="percolation/3.gif" /></p>
 
 <p align="center"><img src="percolation/4.gif" /></p>
+
+To obtain <img src="https://render.githubusercontent.com/render/math?math=p_c"> from what we've done already, all we need to do is find the inflection point of maximum cluster size against evolution time. However, since this is a stochastic process, we want to find the average inflection point over a large number of network evolutions to determine more precisely where this threshold is. Running the simuation only 100 times and averaging our values, we obtain the following logistic curve:
+
+<p align="center"><img src="percolation/smax.png" /></p>
+
+Using a differential calculus Python package `findiff` one can find the inflection point to appear consistently at <img src="https://render.githubusercontent.com/render/math?math=p_c = 0.497">, very much in agreement with the accepted (analytically determined) [threshold for bond percolation on 2-d sqaure lattices](https://en.wikipedia.org/wiki/Percolation_threshold#Percolation_on_2D_lattices) <img src="https://render.githubusercontent.com/render/math?math=p_c = 1/2">
+
+A common theme in percolation theory is to investigate infinite networks and consequently the behaviour of the system near the emergance of an infinite cluster (at the critical probability threshold). Being able to analytically model these systes would allow for characterization of growth and interaction in networks of an arbitrary size. Computationally, it is impossible to create an infinite array of memory space, but the properties of infinite networks can be reasonably estimated using extrapolating methods developed over years of identifying universal properties of lattices.
+
+For example, if one were to ask for critical probability threshold of a infinite 2-d lattice, I could not just set L to infinity and find where an infinite cluster emerges, due to the reality of memory in computers. What I could do is find <img src="https://render.githubusercontent.com/render/math?math=p_c"> for a series of values of L and use the universal constant for 2-d systems <img src="https://render.githubusercontent.com/render/math?math=\nu = 4/3 "> to extrapolate and estimate <img src="https://render.githubusercontent.com/render/math?math=p_c"> of an infinite 2-d lattice as shown below:
+
+<p align="center"><img src="percolation/extrapolation.png" /></p>
+
+Finding the intercept (corresponding to the limit of <img src="https://render.githubusercontent.com/render/math?math=L^{-1/ \nu}"> as L goes to infinity
