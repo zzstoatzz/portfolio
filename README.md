@@ -29,7 +29,7 @@ log-probability score = <img src="https://render.githubusercontent.com/render/ma
 
 The probability score is the prior value from the number of posts with the label you're calculating plus the contribution of each word in the post. To avoid null values in situations where a word has never been seen before or seen before with a specific label, I conditionally calculate the contribution of each word as shown below:
 
-```
+```python
 def log_score(obj, newPost, label):
     num = len(obj.posts)
     bank, labels, pairs = obj.words, obj.labels, obj.pairs
@@ -49,7 +49,7 @@ def log_score(obj, newPost, label):
     return sum
 ```
 For a single new post unknown to the classifier, the `log_score()` routine runs for each label known to the classifier and select the label giving the largest score, using the classifier predict member function as shown below:
-```
+```python
 def predict(self, file):
     df = pd.read_csv(file).dropna()
     newPosts = [Post(i, j) for i,j in df.iterrows()]
@@ -70,4 +70,11 @@ This process is repeated throughout the whole csv of new posts and each time I c
 
 I remembering being excited about this because even for a relatively simple Bag of Words model, it correctly matched 2563 of 2959 new posts based on 11,283 training posts, 87% accuracy. This project's source is linked [here](https://github.com/zzstoatzz/portfolio/blob/master/classify.py). 
 
-A future exploit of mine may be to alter the structure of this project to attack a similar problem (sentiment analysis using Tweepy) while using more of a neural network / stochastic gradient descent correction method to predict more abstract ideas than a post label. 
+In the future I want to alter the structure of this project to attack a similar problem (sentiment analysis on Twitter and other platforms using Tweepy / relevant API) while using more of a neural network / stochastic gradient descent correction method to predict more abstract ideas than just post labels. 
+
+### Physics Presentation: Percolation
+#### Background
+For the physics lab that accompanied Physics 390: Modern Physics (that I took for to complete my physics minor), we had to give a presentation on some active area of particle physics. Since I spent summer 2019 researching percolating networks with my fluids professor, I figured I would give a summary of my work as well as overview of the topic in general. Here is a snapshot of what I learned and created throughout my research and the creation of the presentation.
+
+![alt text](https://imgur.com/aSu5kdJ)
+
