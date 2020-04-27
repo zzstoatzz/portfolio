@@ -81,13 +81,11 @@ My professor has spent a great deal of time developing the theory of percolation
 While I spent a lot of time reading about these different sub-disciplines, I focused most of my time working on networks that are of a transitional dimension (i.e. a really large 2-d network with a very small height).  Naturally, if a randomly evolving network has more dimensions to grow in, long-range connectivity will emerge more quickly for the same 'infection rate' (which is analogous to saying that a virus will spread more quickly if more people are around). We were interested in describing the relationship between percolation threshold values and marginal dimensionality, so I studied <img src="https://render.githubusercontent.com/render/math?math=p_c"> values in increasingly thick network 'slabs'. Here I will show the 2-d case for purposes of illustration.
 
 #### Solution
-To setup the confines of our network (in the bond percolation regime that I am showing), one can create a "lattice" or system of nodes (also called sites) of a specific size. Below is an example of a 4x4x1 square lattice (L = 4):
-
+To setup the confines of our network (in the bond percolation regime that I am showing), one can create a "lattice" or system of nodes (also called sites) of a specific size. Programmatically, this can be modeled by a simple 1-d array equal in length to the total number of nodes, as shown by the typical array below:
+<p align="center"><img height="100" src="percolation/array.png"  /></p>
+One could imagine "chopping" this array into L rows, chopping every L nodes to create an abstract lattice from a simple array. Below is an example of a 4x4x1 square lattice (L = 4):
 <p align="center"><img width="200" src="percolation/start.png"  /></p>
-
-Programmatically, this can be modeled by a simple 1-d array equal in length to the total number of nodes, which we mentally "chop" into L rows, chopping every L nodes to create an abstract lattice from a simple array. Next we have to model the ways in which nodes can interact with each other. 
-
-In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds in terms of the vertices that would be necessitated by these bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
+Next we have to model the ways in which nodes can interact with each other. In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds in terms of the vertices that would be necessitated by these bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
 
 ```python
 # init vertex lists, return iterator (3/2*N) as 'index'
