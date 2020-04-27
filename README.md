@@ -1,6 +1,8 @@
 # Nathan Nowack: Projects
 Here is a summary of some projects that I was excited to work on. I've tried to pick material that shows a template of skills that can be applied to a lot of different practical things, even if the examples themselves are... uh a little abstract.
 
+<p align="center"><img height="500" src="intro.gif"  /></p>
+
 ### Bag of Words Classifier (based on EECS 280 project)
 #### Background
 For this project, we were tasked with creating a forum post classifier with C++ by using a Bag of Words model. I have recreated the functionality of this program in Python for practice (and to avoid violating the Honor Code by posting my actual assignment).
