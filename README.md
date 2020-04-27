@@ -161,7 +161,7 @@ def cluster(index, lists, big, M2):
         M2minus[i] += (M2 - big*1.0*big)
     return ptr
 ```
-Using igraph (which I believe sits on top of matplotlib.pyplot) and ffmpeg I created and stitched together images of the clusters after each new added bond to show the evolution of the network for widths of 4, 16, 32, and 64 nodes as shown:
+Using `igraph` (which I believe sits on top of `matplotlib.pyplot`) and `ffmpeg` I created and stitched together images of the clusters after each new added bond to show the evolution of the network for widths of 4, 16, 32, and 64 nodes as shown:
 
 <p align="center"><img src="percolation/1.gif" /></p>
 
@@ -171,7 +171,7 @@ Using igraph (which I believe sits on top of matplotlib.pyplot) and ffmpeg I cre
 
 <p align="center"><img src="percolation/4.gif" /></p>
 
-To obtain <img src="https://render.githubusercontent.com/render/math?math=p_c"> from what we've done already, all we need to do is find the inflection point of maximum cluster size against evolution time. However, since this is a stochastic process, we want to find the average inflection point over a large number of network evolutions to determine more precisely where this threshold is. Running the simuation 100 times for L = 128 and averaging our values, we obtain the following logistic curve:
+To obtain <img src="https://render.githubusercontent.com/render/math?math=p_c"> from what we've done already, all we need to do is find the inflection point of maximum cluster size against evolution time. However, since this is a stochastic process, we want to find the average inflection point over a large number of network evolutions to determine more precisely where this threshold is. Running the simuation 100 times for `L = 128` and averaging our values, we obtain the logistic curve below (similar to something you would see for number of virus hosts in an extraordinarily reckless society):
 
 <p align="center"><img src="percolation/smax.png" /></p>
 
@@ -185,4 +185,4 @@ Computationally, it is impossible to create an infinite array of memory space, b
 
 Finding the intercept (corresponding to the limit of <img src="https://render.githubusercontent.com/render/math?math=L^{-1/ \nu}"> as L goes to infinity) is therefore akin to finding the percolation threshold of an infinite square 2-d lattice!
 
-My value in this case, only running the simulation 100 times, was <img src="https://render.githubusercontent.com/render/math?math=p_c = 0.5007"> . This is a small but significant improvement over critical threshold of the single L = 128 lattice, an improvement that becomes more significant in larger and more complex networks.
+My value in this case, only running the simulation 100 times, was <img src="https://render.githubusercontent.com/render/math?math=p_c = 0.5007"> . This is a small but significant improvement over critical threshold of the single `L = 128` lattice, an improvement that becomes more significant in larger and more complex networks.
