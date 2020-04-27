@@ -1,5 +1,5 @@
 # Nathan Nowack: Projects
-Here is a summary of some projects that I was excited to work on. I've tried to pick material that shows a template of skills that can be applied to a lot of different practical things, even if the examples themselves are... uh a little abstract.
+Here is a summary of some projects that I was excited to work on. I've tried to pick material that shows a template of skills that can be applied to a lot of different practical things, even if the examples themselves are a bit abstract.
 
 <p align="center"><img height="500" src="newintro.gif"  /></p>
 
@@ -91,7 +91,7 @@ To setup the confines of our network (in the bond percolation regime that I am s
 
 One could imagine "chopping" this array into L rows, chopping every L nodes to create an abstract lattice from a simple array. Below is the chopped array, resulting in an abstracted 4x4x1 square lattice (where L = 4):
 
-<p align="center"><img width="200" src="percolation/start.png"  /></p>
+<p align="center"><img width="300" src="percolation/start.png"  /></p>
 
 Next we have to model the ways in which nodes can interact with each other. In most 2-d models, nodes are limited to interacting with their N, S, E, W "nearest neighbors" and so we can define a list of all the possible bonds that can exist in terms of the vertices these bonds would connect at (each bond you add has to connect at two vertices, so I've represented the list of bonds as a list of vertices necessitated by possible bonds). The following code allows for 3 dimensional systems by including bonds between nodes directly above/below each other in adjacent 2-d layers, but here I'm just talking about a 2-d lattice so the `for z in range(0, WIDTH)` loops won't add any bonds to our list of possible vertices in this case.
 
