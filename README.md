@@ -266,10 +266,10 @@ def createDash(args, plts='all'):
 Note that I could have accomplished something like this way faster if I just used `PyAudio` and some Discrete Fourier Transform package, and in my application, that is what I will do. I just wanted to understand better where the idea came from, and get a little animation experince in the process.
 
 # 
-#### A visual for playing along with *the mood*
+#### A visual reference for playing guitar along with *the mood*
 ##### June 9, 2020
 
-I have taken a rather non-linear path on this project, partly because of the sporradic nature of my interests but also because I had this idea and wanted to get it into code. Instead of getting right into the Spotify API and figuring out how to extract user info or working on the predictive 'color' model, I created an interface to be used after a song is predicted, so that one can play along with their 'mood' (key). Better displayed on my [GitHub page](https://zzstoatzz.github.io/), here is what I'm talking about:
+I have taken a rather non-linear path on this project, partly because of the sporradic nature of my interests but also because I had this idea and wanted to get it into code. Instead of getting right into the Spotify API and figuring out how to extract user info or working on the predictive 'color' model, I created an interface to be used after a song is predicted, so that one can play guitar along with their 'mood' (key). Better displayed on my [GitHub page](https://zzstoatzz.github.io/), here is what I'm talking about:
 
 <p align="center"><img src="board/media/demo.gif" /></p>
 
