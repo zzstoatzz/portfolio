@@ -37,7 +37,7 @@ Currently, I am an entry-level engineer seeking roles similar to:
 - Market Forecasting Analyst
 - Machine Learning Intern
 - Quality Engineer
-<p style="text-align:right ; margin-right: 48px ; margin-top: -20px; font-size:70%; color: grey"> <i>My mom and I (March 2019) </i> </p>
+
 
 <p align="center"><img height="500" src="newintro.gif"  /></p>
 
@@ -69,7 +69,7 @@ I recently audited IBM / Coursera's [Introduction to Deep Learning & Neural Netw
 
 Using a structured [Spotify song dataset](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) I found on Kaggle, I created a neural-network regression model to predict song **popularity** given features like the Spotify-generated metrics (e.g. *energy*, *danceability*, *tempo*) and song features like the musical *key* of the song. 
 
-Below is the structure of the dataset as I found it. It includes 169,909 songs where each has both *numerical* and *categorical* factors, such as *energy* and *key* respectively. Here, I truncated the dataset to include 1000 songs (since I'm on my laptop's GPU).
+Below is the structure of the dataset as I found it. It includes 169,909 songs where each has both *numerical* and *categorical* factors, such as *energy* and *key* respectively. Here, I truncated the dataset to include 1000 songs (since I'm on my laptop's GPU):
 
 <div align="center"> <img style="height:400; border: 1px" src="pictures/spotify_db.png"> </img> </div>
 
@@ -165,6 +165,7 @@ results = model.evaluate(normalized_test, test_labels, batch_size=32)
 | **loss** | **mean absolute error** |
 | :---: | :--: |
 | 0.3561 | 1.1009 |
+
 </center>
 
 #### Conclusion
