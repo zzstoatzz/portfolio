@@ -38,9 +38,6 @@ Currently, I am an entry-level engineer seeking roles similar to:
 - Machine Learning Intern
 - Quality Engineer
 
-
-<p align="center"><img height="500" src="newintro.gif"  /></p>
-
 ---
 
 ##  Professional and Academic Background
