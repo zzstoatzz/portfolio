@@ -59,7 +59,7 @@ Here I've summarized some relevant projects that functioned as learning experien
 
 --- 
 ### Using Tensorflow's ***Keras*** to predict song popularity
-<p style="margin-top: -15px; font-size: 10px"> October 2020 - present </p>
+<p style="margin-top: -15px; font-size: 10px"> October 2020 </p>
 
 #### Background
 I recently audited IBM / Coursera's [Introduction to Deep Learning & Neural Networks with Keras](https://www.coursera.org/learn/introduction-to-deep-learning-with-keras?action=enroll&authMode=signup) course, which made me want learn more about modeling with *Keras*. 
