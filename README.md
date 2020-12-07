@@ -1,12 +1,185 @@
-# Nathan Nowack: Projects
+# Nathan Nowack
+**email** : nnowack@umich.edu 
+
+**LinkedIn** : [Profile Page](https://www.linkedin.com/in/nathan-nowack-a6b59b143/)
+
+---
+
+portfolio directory: 
+
+- **[Professional and Academic Background](##-Professional-and-Academic-Background)**
+
+- **[Project Summaries](##-Project-Summaries)** 
+
+- **[other whimsical projects](#-Somewhat-whimsical-projects)**
+
+
+---
+
+## Introduction
+
+
+<img align="right" height="24" src="pictures/umichCOE.png"/>
+
+#### University of Michigan - Ann Arbor :  *College of Engineering*
+
+
+-  August 2020 alumnus, cum laude 
+
+- **Major:** Chemical Engineering
+<img align="right" style="margin-right: 20px" height="200" src="pictures/me.png"/>
+
+- **Minor**: Physics
+
+Currently, I am an entry-level engineer seeking roles similar to:
+- Process Engineer
+- Data Scientist / Python Developer
+- Market Forecasting Analyst
+- Machine Learning Intern
+- Quality Engineer
+<p style="text-align:right ; margin-right: 48px ; margin-top: -20px; font-size:70%; color: grey"> <i>My mom and I (March 2019) </i> </p>
 
 <p align="center"><img height="500" src="newintro.gif"  /></p>
 
-Here is a summary of some projects that I was excited to work on. I've tried to pick material that shows a template of skills that can be applied to a lot of different practical things, even if the examples themselves are a bit abstract.
+---
+
+##  Professional and Academic Background
+
+As a chemical engineering (ChE) undergrad, I've learned to use formalized math, physics, and chemistry frameworks to understand and process matter. To develop analytic models of phenomena *(e.g. systems of ODEs representing CSTR reactor evolution in Reactor Design class)*, ChE students often applied time-series regression to do things like specify coefficients *(e.g. N-order reaction rate laws from concetration over time)*. We were directed to use *PolyMath* (a literal ODE-system solver) or *Python* to accomplish this. Although intended as a means of informing process-engineering-oriented design considerations, I found the process of creating the solver in Python really exciting. Having this one small project and limited programming knowledge, I decided to focus my attention on skills in the union of engineering and data science. Consequently, since sophomore year, I’ve been practicing telling stories about datasets, mostly with Python’s statistical, databasing, visualization modules (*numpy*, *pandas*, *matplotlib*, *keras*, etc). Since then, I've taken courses in data structures, computational physics, and discrete math to build a conceptual background. I've learned to apply OOP concepts and software good practices by implementing ODE solvers, financial sensitivity models, custom python modules to generate visuals for homework, and  [personal projects](##-Personal-Projects).
+
+During the summer of 2018, my role at Air Products (AP) as a Quality Engineer was to create predictive equipment health models. Using an understanding of the thermodynamics at play in system sub-domains and SQL queries to gather model input from AP manufacturing plants' cloud databases, we developed time-series regression models to associate and predict plant data.  These models effectively predicted equipment behaviour and retroactively isolated root causes of equipment failures. Throughout the role, I created and monitored equipment models for several dozen Air Products’ HYCO plants, proactively recommending maintenance to plant managers with clear, concise, and portable dashboards. In exploring the proprietary data processing framework we were using, I became familiar with SQL-oriented cloud-data pipelines common to the development of regression and classification models in general (e.g. BigQuery, Apache, and running on AWS).
+
+While I didn’t remain in the industrial gas industry, I continue to find intrigue in the insightful storytelling of structured and unstructured data. My recent role in the scale-up of a polystyrene recycling plant, my senior design project, was to **model the likelihood of project capital outcomes**. I used Python to collect and analyze market data on relevant process variables’ capital costs, so I could determine NPV sensitivities and generate [visuals](###-Polystyrene-recycling-scale-up). I presented my findings to my team and administrative chair, **recommending a specific project capital allocation to ensure the highest probability of maximum profitability**. 
+
+Recently, I’ve utilized COVID-mandated free-time by using Tensorflow's *Keras* API as a tool to quickly perform linear and DNN classification / regression. As documented [below](###-Using-Tensorflow's-Keras-to-predict-song-popularity), I believe that the analysis used in the song popularity model with multiple-factor regression could be applied to, for instance, a N-factor regression model predicting when consumers are most likely to interact with company advertisements or classification model identifying social media users receptive to targeted advertisements.
+
+
+---
+
+## Project Summaries
+
+Here I've summarized some relevant projects that functioned as learning experiences. I've tried to select material that demonstrates a template of skills in data manipulation and visualization that could apply to a range of responsibilites in industry-specific analytics.
 
 --- 
+### Using Tensorflow's ***Keras*** to predict song popularity
+<p style="margin-top: -15px; font-size: 10px"> October 2020 - present </p>
+
+#### Background
+I recently audited IBM / Coursera's [Introduction to Deep Learning & Neural Networks with Keras](https://www.coursera.org/learn/introduction-to-deep-learning-with-keras?action=enroll&authMode=signup) course, which made me want learn more about modeling with *Keras*. 
+
+Using a structured [Spotify song dataset](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) I found on Kaggle, I created a neural-network regression model to predict song **popularity** given features like the Spotify-generated metrics (e.g. *energy*, *danceability*, *tempo*) and song features like the musical *key* of the song. 
+
+Below is the structure of the dataset as I found it. It includes 169,909 songs where each has both *numerical* and *categorical* factors, such as *energy* and *key* respectively. Here, I truncated the dataset to include 1000 songs (since I'm on my laptop's GPU).
+
+<div align="center"> <img style="height:400; border: 1px" src="pictures/spotify_db.png"> </img> </div>
+
+#### Cleaning and Preprocessing the dataset
+I removed the following features from consideration:  *artists*, *id*, *name*, *year*, and *release date*. This is because they were either irrelevant to popularity (e.g. *id*) or introduced a bias that doesn't (in my opinion) have anything to do with the nature of the songs themselves (e.g. artist, year). 
+
+Here, the *key* feature is categorical (0 corresponding to the key of C, 1 to D flat, and so on...). Therefore, in order to regress my model, I needed to *one-hot encode* the *key* feature, turning the single categorical column into 12 binary columns (one for each key).
+
+```python
+# one-hot encode the categorical 'key' feature
+keys = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B']
+key_map = {}
+
+for i in range(0, len(keys)): key_map[i] = keys[i]
+    
+df['key'] = df['key'].map(key_map)
+df = pd.get_dummies(df, prefix='', prefix_sep='')
+```
+
+Next, I used a `sklearn` method called `train_test_split` to get training and testing sets from my `pandas` dataset:
+
+```python
+# split df into training and testing sets
+train, test = train_test_split(df, test_size=0.2)
+```
+
+Since features like *loudness* and *duration_ms* had significantly different value ranges than the Spotify-generated song metrics (which are in [0,1]), I decided to normalize these value ranges. First, I used `pandas.DataFrame.describe()` to generate a statistical summary of my training set, called `train_stats`. The first 5 features in `train_stats` are shown below:
+
+<div align="center"> <img style="height:400; border: 1px" src="pictures/train_stats.png"> </img> </div>
+
+After using `df.pop('popularity')` to split off training and testing labels into their own lists, I normalized my training and testing sets using a method that leverages `train_stats`:
+
+```python
+# define z-score normalization method using train_stats
+def normalize(x):
+    return (x - train_stats['mean']) / train_stats['std']
+
+# normalize training and testing sets
+normalized_train = normalize(train)
+normalized_test = normalize(test)
+```
+#### Model Training and Evaluation
+After preprocessing, I was ready to build the *Keras* model:
+
+```python
+def build_model():
+    model = keras.Sequential([
+        keras.layers.Dense(64, activation=tf.nn.relu, input_shape=[len(train.keys())]),
+        keras.layers.Dense(1)
+    ])
+    
+    model.compile(
+        loss='mae', 
+        optimizer=tf.keras.optimizers.Adam(lr=0.001),
+        metrics=['mae', 'mse'])
+   
+    return model
+
+model = build_model()
+```
+I chose a `Sequential` model with 2 defined layers, the *Rectified Linear Unit* (relu) activation function and the `Adam` optimizer.
+
+With the model created, I trained the model for 100 epochs:
+
+```python
+# specify number of epochs and train model with validation
+EPOCHS = 100
+
+history = model.fit(
+    normalized_train, train_labels,
+    epochs=EPOCHS, validation_split=0.2, verbose=0,
+    callbacks=[PrintDot()]
+)
+```
+**NOTE**: the callback function `PrintDot()` is an indicator of training progress.
+
+... and plotted a *"learning curve"* to show the evolution of *mean absolute error* over the course of the training epochs. Looking at the learning curve below, my validation error is above my training error and trending up slightly. This suggests that I have overfit my model, which could be a result of:
+- too many training epochs
+- improper use of the `Adam` optimizer (which I don't fully understand yet)
+
+<div align="center"> <img style="height:400; border: 1px" src="pictures/spotModelOver.png"> </img> </div>
+
+Lastly, I evaluated the model on my testing dataset as follows:
+
+```python
+results = model.evaluate(normalized_test, test_labels, batch_size=32)
+```
+
+... which gave my model results for this training session:
+
+<center>
+
+| **loss** | **mean absolute error** |
+| :---: | :--: |
+| 0.3561 | 1.1009 |
+</center>
+
+#### Conclusion
+
+Since Spotify's popularity metric is a number from 0-100, a mean absolute error of ~1 is not bad for my (relatively crude) model. If I wanted to improve this model's accuracy / robustness, some design modifications I could explore are:
+- the topology of the neural network (either more layers or changing layer width)
+- including more than 1000 song examples in the model
+- a different optimizer 
+- conducting an F-score analysis on my features and choosing the top 10
+
+---
 
 ### Bag of Words Classifier (based on EECS 280 project)
+<p style="margin-top: -15px; font-size: 10px"> April 2020 </p>
+
 #### Background
 For this project, we were tasked with creating a forum post classifier with C++  using a Bag of Words model. I have recreated the functionality of this program in Python for practice (and to avoid violating the Honor Code by posting my actual assignment).
 
@@ -19,11 +192,11 @@ Some csv files with Piazza posts (student-instructor Q&A forum) were provided, c
 | recursion | i may have missed this but would we expect to have negative numbers in our liststrees |
 |...|...|
 
-During this project we were learning about Binary Search Trees, recursion and maps, so we were required to implement our own search tree and map classes before creating the post classifier. These implementations were pretty slow, so when it came time to write the high-level classifier we used the more efficient standard C++ map/BST structures. In my recreation, I used Python's analogous `dict` class. 
+During this project we were learning about Binary Search Trees, recursion and maps, so we were required to implement our own search tree and map classes before creating the post classifier. These implementations were pretty slow, so when it came time to write the high-level classifier we used the more efficient standard C++ map/BST structures. In my recreation, I use Python's analogous `dict` class. 
 
 To train our classifier to recognize posts, we used a simplified form of Bayes' conditional probability theory:    <img src="https://render.githubusercontent.com/render/math?math=P(C|X) = \frac{P(C) * P(X|C)}{P(X)}">
 
-... the interpretation states that the probability a given post X has label C is a function of: the number of posts with label C & some factor representing the likelihood that X has C given the history of associations between the words in the post and post labels.
+... the interpretation in this case being: the probability a given post *X* has label *C* is a function of: the number of posts with label *C* and some factor representing the likelihood that *X* has *C* given the history of associations between the words (& word pairs) in a given post and the post labels.
 
 #### Solution
 I created a class `Classifier()` for the high-level classifier with members to store a history of posts, labels, unique words, unique word-label pairs and with member functions to read in and record instances of words with labels in the training data, predict the labels of new posts, and to summarize the results. I used Python's `set()` for the word bank to avoid adding duplicate items.
@@ -32,7 +205,7 @@ I created a class `Post()` representing a single forum post with members for the
 
 Next, I created a function to calculate the *log-probability score* of all labels for a given based on the classifier map of word-label instances, using Bayes' theorem in the following manner:
 
-log-probability score =  <img src="https://render.githubusercontent.com/render/math?math=ln P(C)"> + <img src="https://render.githubusercontent.com/render/math?math=\sum_i^N ln P (w_i | C )"> 
+**log-probability score** =  <img src="https://render.githubusercontent.com/render/math?math=ln P(C)"> + <img src="https://render.githubusercontent.com/render/math?math=\sum_i^N ln P (w_i | C )"> 
 
 The probability score is the prior value from the number of posts with the label it's calculating plus the contribution of each word in the post. To avoid null values in situations where a word has never been seen before or seen before with a specific label, I conditionally calculate the contribution of each word as shown below:
 
@@ -79,9 +252,18 @@ I remembering being excited about this because even for a relatively simple Bag 
 
 In the future I want to alter the structure of this project to attack a similar problem (sentiment analysis on Twitter and other platforms using Tweepy / relevant API) while using more of a neural network / stochastic gradient descent correction method to predict more abstract ideas than just post labels. 
 
+
+---
+
+### Polystyrene recycling scale-up
+<p style="margin-top: -15px; font-size: 10px"> January-March 2020 </p>
+
+
 ---
 
 ### Physics Presentation: Percolation
+<p style="margin-top: -15px; font-size: 10px"> April 2020 </p>
+
 #### Background
 For the physics lab that accompanied Physics 390: Modern Physics (that I took for to complete my physics minor), we had to give a presentation on some active area of particle physics. Since I spent summer 2019 researching percolating networks with my fluids professor, I figured I would give a summary of my work as well as overview of the topic in general. Here is a snapshot of what I learned and created throughout my research and the creation of the presentation.
 
@@ -190,8 +372,11 @@ Finding the intercept (corresponding to the limit of <img src="https://render.gi
 My value in this case, only running the simulation 100 times, was <img src="https://render.githubusercontent.com/render/math?math=p_c = 0.5007"> . This is a small but significant improvement over critical threshold of the single `L = 128` lattice, an improvement that becomes more significant in larger and more complex networks.
 
 ---
+## Somewhat whimsical projects
 
-### Mood Board
+### Mood Board 
+<p style="margin-top: -15px; font-size: 10px"> June 2020 - present </p>
+
 I love music, it is one of the central pillars of my life among my family, friends, and academia/work. As a means of learning UI/UX, to make animations, and real-time sound analysis... I started a personal project that will incorporate all of these things into an "online mood ring". That is, some song will represent a user's 'color' state (frequency state) at any given time, to be regressively derived their song history (via Spotify API).
 #
 
