@@ -68,7 +68,7 @@ I recently audited IBM / Coursera's [Introduction to Deep Learning & Neural Netw
 
 Using a structured [Spotify song dataset](https://www.kaggle.com/yamaerenay/spotify-dataset-19212020-160k-tracks) I found on Kaggle, I created a neural-network regression model to predict song **popularity** given features like the Spotify-generated metrics (e.g. *energy*, *danceability*, *tempo*) and song features like the musical *key* of the song. 
 
-Below is the structure of the dataset as I found it. It includes 169,909 songs where each has both *numerical* and *categorical* factors, such as *energy* and *key* respectively. Here, I truncated the dataset to include 1000 songs (since I'm on my laptop's GPU):
+Below is the structure of the dataset as I found it. It includes 169,909 songs where each has both *numerical* and *categorical* factors, such as *energy* and *key* respectively. In compliling the below, I truncated the dataset to include 1000 songs:
 
 <div align="center"> <img style="height:400; border: 1px" src="pictures/spotify_db.png"> </img> </div>
 
