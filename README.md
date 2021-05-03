@@ -7,11 +7,11 @@
 
 portfolio directory: 
 
-- **[Professional and Academic Background](#-Professional-and-Academic-Background)**
+- [Professional and Academic Background)](#Professional-and-Academic-Background)
 
-- **[Project Summaries](#-Project-Summaries)** 
+- [Project Summaries](#Project-Summaries)
 
-- **[other whimsical projects](#-Somewhat-whimsical-projects)**
+- [other whimsical projects](#Somewhat-whimsical-projects)
 
 
 ---
