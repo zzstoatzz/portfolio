@@ -50,7 +50,7 @@ During the summer of 2018, my role at Air Products (AP) as a Quality Engineer wa
 
 While I didn’t remain in the industrial gas industry, I continue to find intrigue in the insightful storytelling of structured and unstructured data. My recent role in the scale-up of a polystyrene recycling plant, my senior design project, was to **model the likelihood of project capital outcomes**. I used Python to collect and analyze market data on relevant process variables’ capital costs, so I could determine NPV sensitivities and generate [visuals](#Polystyrene-recycling-scale-up). I presented my findings to my team and administrative chair, **recommending a specific project capital allocation to ensure the highest probability of maximum profitability**. 
 
-Recently, I’ve utilized COVID-mandated free-time by using Tensorflow's *Keras* API as a tool to quickly perform linear and DNN classification / regression. As documented [below](#Using-Tensorflow's-Keras-to-predict-song-popularity), I believe that the analysis used in the song popularity model with multiple-factor regression could be applied to, for instance, a N-factor regression model predicting when consumers are most likely to interact with company advertisements or classification model identifying social media users receptive to targeted advertisements.
+Recently, I’ve utilized COVID-mandated free-time by using Tensorflow's *Keras* API as a tool to quickly perform linear and DNN classification / regression. As documented [below](#Using-Tensorflow-Keras-to-predict-song-popularity), I believe that the analysis used in the song popularity model with multiple-factor regression could be applied to, for instance, a N-factor regression model predicting when consumers are most likely to interact with company advertisements or classification model identifying social media users receptive to targeted advertisements.
 
 
 ---
@@ -60,7 +60,7 @@ Recently, I’ve utilized COVID-mandated free-time by using Tensorflow's *Keras*
 Here I've summarized some relevant projects that functioned as learning experiences. I've tried to select material that demonstrates a template of skills in data manipulation and visualization that could apply to a range of responsibilites in industry-specific analytics.
 
 --- 
-### Using Tensorflow's ***Keras*** to predict song popularity
+### Using Tensorflow ***Keras*** to predict song popularity
 <p style="margin-top: -15px; font-size: 10px"> October 2020 </p>
 
 #### Background
