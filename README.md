@@ -31,12 +31,7 @@ portfolio directory:
 
 - **Minor**: Physics
 
-Currently, I am an entry-level engineer seeking roles similar to:
-- Process Engineer
-- Data Scientist / Python Developer
-- Market Forecasting Analyst
-- Machine Learning Intern
-- Quality Engineer
+Currently, I work as a junior data engineering consultant for [SLATE Data + Design](https://slateco.io). 
 
 ---
 
