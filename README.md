@@ -142,7 +142,7 @@ history = model.fit(
 
 ... and plotted a *"learning curve"* to show the evolution of *mean absolute error* over the course of the training epochs. Looking at the learning curve below, my validation error is above my training error and trending up slightly. This suggests that I have overfit my model, which could be a result of:
 - too many training epochs
-- improper use of the `Adam` optimizer (which I don't fully understand yet)
+- potential inapplicability of the `Adam` optimizer 
 
 <div align="center"> <img style="height:400; border: 1px" src="pictures/spotModelOver.png"> </img> </div>
 
